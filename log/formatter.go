@@ -22,8 +22,10 @@ func (f *StationFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	}
 	sort.Strings(keys)
 	prefixFieldClashes(entry.Data)
-	f.printColored(b, entry, keys)
 	b := &bytes.Buffer{}
+	
+	f.printColored(b, entry, keys)
+
 	return b.Bytes(), nil
 }
 
