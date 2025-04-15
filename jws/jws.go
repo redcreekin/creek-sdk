@@ -2,23 +2,23 @@ package jws
 
 import (
 	"bytes"
-	creek_sdk "creek-sdk"
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
+	sdk "github.com/redcreekin/creek-sdk"
 	"gopkg.in/go-jose/go-jose.v2"
 )
 
 func NewRandomSymmetricKey(size int) ([]byte, error) {
 	if size <= 0 || size%8 != 0 {
-		return nil, creek_sdk.WithStack(fmt.Errorf("invalid key size"))
+		return nil, sdk.WithStack(fmt.Errorf("invalid key size"))
 	}
 
 	k := make([]byte, size)
 	if _, err := rand.Read(k); err != nil {
-		return nil, creek_sdk.WithStack(err)
+		return nil, sdk.WithStack(err)
 	}
 	return k, nil
 }
@@ -83,7 +83,7 @@ func NewSigner(privateKey *rsa.PrivateKey) (jose.Signer, error) {
 func NewHMACSigner(secret []byte) (jose.Signer, error) {
 	sign, err := jose.NewSigner(jose.SigningKey{Algorithm: jose.HS512, Key: secret}, nil)
 	if err != nil {
-		return nil, creek_sdk.WithStack(err)
+		return nil, sdk.WithStack(err)
 	}
 	return sign, nil
 }

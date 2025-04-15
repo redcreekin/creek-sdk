@@ -1,1 +1,1 @@
-package creek_sdk
+package sdk
