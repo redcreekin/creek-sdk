@@ -2,7 +2,11 @@ package creek_sdk
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
+	"github.com/rockbears/log"
 	"net/http"
+	"os"
+	"strings"
 )
 
 var (
@@ -86,6 +90,7 @@ type Error struct {
 	StackTrace string      `json:"stack_trace,omitempty"`
 	From       string      `json:"from,omitempty"`
 }
+type MultiError []error
 
 func (e Error) Error() string {
 	var message string
@@ -127,4 +132,140 @@ func (w errorWithStack) Error() string {
 		return w.httpError.Error()
 	}
 	return fmt.Sprintf("%s %s", w.httpError, cause)
+}
+
+func (e Error) Translate() string {
+	msg, ok := errorsEnglish[e.Code]
+	if !ok {
+		return errorsEnglish[ErrUnknownError.Code]
+	}
+	return msg
+}
+
+func (e Error) printLight() string {
+	var message string
+	if e.Message != "" {
+		message = e.Message
+	} else if en, ok := errorsEnglish[e.Code]; ok {
+		message = en
+	} else {
+		message = errorsEnglish[ErrUnknownError.Code]
+	}
+	if e.From != "" {
+		message = fmt.Sprintf("%s: %s", message, e.From)
+	}
+	return message
+}
+
+func NewError(httpError Error, err error) error {
+	// if the given error is nil do nothing
+	if err == nil {
+		return nil
+	}
+
+	// if it's already an error with stack, override the http error and set from value with err cause
+	if e, ok := err.(errorWithStack); ok {
+		httpError.From = e.httpError.From
+		e.httpError = httpError
+		return e
+	}
+
+	if e, ok := err.(*MultiError); ok {
+		var ss []string
+		for i := range *e {
+			ss = append(ss, ExtractHTTPError((*e)[i]).printLight())
+		}
+		httpError.From = strings.Join(ss, ", ")
+	} else {
+		httpError.From = err.Error()
+	}
+
+	// if it's a library error create a new error with stack
+	return errorWithStack{
+		root:      errors.WithStack(err),
+		httpError: httpError,
+	}
+}
+
+func (w errorWithStack) StackTrace() errors.StackTrace {
+	errStackTrace, ok := w.root.(log.StackTracer)
+	if ok {
+		return errStackTrace.StackTrace()
+	}
+	return nil
+}
+
+func ExtractHTTPError(source error) Error {
+	var httpError Error
+
+	// try to recognize http error from source
+	switch e := source.(type) {
+	case *MultiError:
+		httpError = ErrUnknownError
+		var ss []string
+		for i := range *e {
+			ss = append(ss, ExtractHTTPError((*e)[i]).printLight())
+		}
+		httpError.Message = strings.Join(ss, ", ")
+	case errorWithStack:
+		httpError = e.httpError
+	case Error:
+		httpError = e
+	default:
+		httpError = ErrUnknownError
+	}
+
+	// if it's a custom err with no status use unknown error status
+	if httpError.Status == 0 {
+		httpError.Status = ErrUnknownError.Status
+	}
+
+	// if error's message is not empty do not override (custom message)
+	// else set message for given accepted languages.
+	if httpError.Message == "" {
+		httpError.Message = httpError.Translate()
+	}
+	return httpError
+}
+
+func WithStack(err error) error {
+	if err == nil {
+		return nil
+	}
+	if _, ok := err.(*MultiError); ok {
+		err = NewError(ErrUnknownError, err)
+	}
+
+	// if it's already a Station does not override the error
+	if e, ok := err.(errorWithStack); ok {
+		return e
+	}
+
+	if e, ok := err.(Error); ok {
+		return errorWithStack{
+			root:      errors.New(e.Translate()),
+			httpError: e,
+		}
+	}
+
+	return errorWithStack{
+		root:      errors.WithStack(err),
+		httpError: ErrUnknownError,
+	}
+}
+
+func (e *MultiError) Error() string {
+	var ss []string
+	for i := range *e {
+		ss = append(ss, (*e)[i].Error())
+	}
+	return strings.Join(ss, ", ")
+}
+
+func Exit(format string, args ...interface{}) {
+	if len(args) > 0 && format[:len(format)-1] != "\n" {
+		format += "\n"
+	}
+	_, _ = fmt.Fprintf(os.Stderr, format, args...)
+	os.Exit(1)
 }
