@@ -26,44 +26,40 @@ type StationLogger struct {
 	SkipTextFields []string `toml:"skipTextFields" validate:"omitempty" comment:"Skip text fields"` // Skip text fields
 }
 
-func Initialize(ctx context.Context, logger *StationLogger, writer *os.File) error {
+func Initialize(ctx context.Context, logger *StationLogger, writer *os.File) *log.Logger {
+	loggersObject := logrus.New()
 	switch logger.Level {
 	case "debug":
-		logrus.SetLevel(logrus.DebugLevel)
+		loggersObject.SetLevel(logrus.DebugLevel)
 	case "info":
-		logrus.SetLevel(logrus.InfoLevel)
+		loggersObject.SetLevel(logrus.InfoLevel)
 	case "warn":
-		logrus.SetLevel(logrus.WarnLevel)
+		loggersObject.SetLevel(logrus.WarnLevel)
 	case "error":
-		logrus.SetLevel(logrus.ErrorLevel)
+		loggersObject.SetLevel(logrus.ErrorLevel)
 	default:
-		logrus.SetLevel(logrus.InfoLevel)
+		loggersObject.SetLevel(logrus.InfoLevel)
 	}
 
 	switch logger.LogFormat {
 	case "discard":
-		logrus.SetOutput(io.Discard)
+		loggersObject.SetOutput(io.Discard)
 	case "json":
-		logrus.SetFormatter(&logrus.JSONFormatter{})
+		loggersObject.SetFormatter(&logrus.JSONFormatter{})
 	default:
 		if logger.LogFormat == "stdout" {
-			logrus.SetOutput(os.Stdout)
+			loggersObject.SetOutput(os.Stdout)
 		} else {
-			logrus.SetOutput(writer)
+			loggersObject.SetOutput(writer)
 		}
-		for _, v := range logger.SkipTextFields {
-			t := strings.SplitN(v, "=", 2)
-			fieldName := t[0]
-			fieldValue := t[1]
-			log.Skip(log.Field(fieldName), fieldValue)
-		}
-		logrus.SetFormatter(&StationFormatter{})
+		loggersObject.SetFormatter(&StationFormatter{})
 	}
-
-	return nil
-}
-
-func New(ctx context.Context) (*logrus.Logger, error) {
-	newLogger := logrus.New()
-	return newLogger, nil
+	obj := log.NewWithFactory(log.NewLogrusWrapper(loggersObject))
+	for _, v := range logger.SkipTextFields {
+		t := strings.SplitN(v, "=", 2)
+		fieldName := t[0]
+		fieldValue := t[1]
+		obj.Skip(log.Field(fieldName), fieldValue)
+	}
+	return obj
 }
