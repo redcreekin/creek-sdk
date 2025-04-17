@@ -3,7 +3,6 @@ package slog
 import (
 	"bytes"
 	"fmt"
-	"github.com/mgutz/ansi"
 	"github.com/sirupsen/logrus"
 	"sort"
 	"strings"
@@ -30,7 +29,7 @@ func (f *StationFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 }
 
 func (f *StationFormatter) printColored(b *bytes.Buffer, entry *logrus.Entry, keys []string) {
-	var levelColor string
+	/*var levelColor string
 
 	switch entry.Level {
 	case logrus.InfoLevel:
@@ -41,7 +40,8 @@ func (f *StationFormatter) printColored(b *bytes.Buffer, entry *logrus.Entry, ke
 		levelColor = ansi.Red
 	default:
 		levelColor = ansi.Blue
-	}
+	}*/
+
 	levelText := "[" + strings.ToUpper(entry.Level.String()) + "]"
 	_, _ = fmt.Fprintf(b, "%s %+5s %s \n", entry.Time.Format("2006-01-02 15:04:05"), levelText, entry.Message)
 	for _, key := range keys {
