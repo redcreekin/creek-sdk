@@ -23,7 +23,7 @@ func (f *StationFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	sort.Strings(keys)
 	prefixFieldClashes(entry.Data)
 	b := &bytes.Buffer{}
-	
+
 	f.printColored(b, entry, keys)
 
 	return b.Bytes(), nil
@@ -43,7 +43,7 @@ func (f *StationFormatter) printColored(b *bytes.Buffer, entry *logrus.Entry, ke
 		levelColor = ansi.Blue
 	}
 	levelText := "[" + strings.ToUpper(entry.Level.String()) + "]"
-	_, _ = fmt.Fprintf(b, "%s %s%+5s%s %s", entry.Time.Format("2006-01-02 15:04:05"), levelColor, levelText, ansi.Reset, entry.Message)
+	_, _ = fmt.Fprintf(b, "%s %+5s%s %s \n", entry.Time.Format("2006-01-02 15:04:05"), levelText, ansi.Reset, entry.Message)
 	for _, key := range keys {
 		v := entry.Data[key]
 		if f.Fields == nil || len(f.Fields) == 0 || fieldsInArray(key, f.Fields) {
