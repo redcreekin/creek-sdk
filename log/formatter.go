@@ -43,11 +43,11 @@ func (f *StationFormatter) printColored(b *bytes.Buffer, entry *logrus.Entry, ke
 		levelColor = ansi.Blue
 	}
 	levelText := "[" + strings.ToUpper(entry.Level.String()) + "]"
-	_, _ = fmt.Fprintf(b, "%s %+5s%s %s \n", entry.Time.Format("2006-01-02 15:04:05"), levelText, ansi.Reset, entry.Message)
+	_, _ = fmt.Fprintf(b, "%s %+5s %s \n", entry.Time.Format("2006-01-02 15:04:05"), levelText, entry.Message)
 	for _, key := range keys {
 		v := entry.Data[key]
 		if f.Fields == nil || len(f.Fields) == 0 || fieldsInArray(key, f.Fields) {
-			_, _ = fmt.Fprintf(b, " %s%s%s=%+v", levelColor, key, ansi.Reset, v)
+			_, _ = fmt.Fprintf(b, " %s=%+v", key, v)
 		}
 	}
 }
