@@ -21,6 +21,7 @@ const (
 	RbacRole       = log.Field("rbac_role")
 	RequestID      = log.Field("request_id")
 	RequestURI     = log.Field("request_uri")
+	Service        = log.Field("service")
 
 	Operation     = log.Field("operation")
 	Route         = log.Field("route")
