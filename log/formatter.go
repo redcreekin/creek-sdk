@@ -50,7 +50,7 @@ func (f *StationFormatter) printColored(b *bytes.Buffer, entry *logrus.Entry, ke
 			_, _ = fmt.Fprintf(b, " %s=%+v", key, v)
 		}
 	}
-	_, _ = fmt.Fprintln(b, "")
+	_, _ = fmt.Fprintf(b, "\n")
 }
 
 func fieldsInArray(key string, fields []string) bool {
