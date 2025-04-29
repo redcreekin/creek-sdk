@@ -46,6 +46,7 @@ var (
 	ErrInvalidApplicationPattern = Error{Code: 36, Status: http.StatusBadRequest}
 	ErrInvalidPipelinePattern    = Error{Code: 37, Status: http.StatusBadRequest}
 	ErrNotFound                  = Error{Code: 38, Status: http.StatusNotFound}
+	ErrBadRequest                = Error{Code: 40, Status: http.StatusBadRequest}
 	ErrInvalidGoPath             = Error{Code: 48, Status: http.StatusBadRequest}
 	ErrAlreadyTaken              = Error{Code: 91, Status: http.StatusGone}
 	ErrRocketNodeNotFound        = Error{Code: 93, Status: http.StatusNotFound}
