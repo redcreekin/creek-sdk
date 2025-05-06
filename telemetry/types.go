@@ -1,10 +1,11 @@
 package telemetry
 
 import (
+	"time"
+
 	"go.opencensus.io/plugin/ochttp/propagation/b3"
 	"go.opencensus.io/stats/view"
 	"go.opencensus.io/trace/propagation"
-	"time"
 )
 
 const (
@@ -57,9 +58,11 @@ const (
 
 // B3 headers that OpenCensus understands.
 const (
-	TraceIDHeader = "X-B3-TraceId"
-	SpanIDHeader  = "X-B3-SpanId"
-	SampledHeader = "X-B3-Sampled"
+	TraceIdHeader  = "X-B3-TraceId"
+	SpanIdHeader   = "X-B3-SpanId"
+	SampledHeader  = "X-B3-Sampled"
+	FlagsHeader    = "X-B3-Flags"
+	ParentIdHeader = "X-B3-ParentSpanId"
 
 	ContextTraceIDHeader contextKey = iota
 	ContextSpanIDHeader
