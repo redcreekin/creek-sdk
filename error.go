@@ -2,11 +2,12 @@ package sdk
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
-	"github.com/rockbears/log"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/pkg/errors"
+	"github.com/rockbears/log"
 )
 
 var (
@@ -37,32 +38,35 @@ var (
 	ErrBuildArchived             = Error{Code: 26, Status: http.StatusBadRequest}
 	ErrNoEnvironment             = Error{Code: 27, Status: http.StatusNotFound}
 	ErrModelNameExist            = Error{Code: 28, Status: http.StatusForbidden}
+	ErrAPIError                  = Error{Code: 29, Status: http.StatusInternalServerError}
 	ErrNoProject                 = Error{Code: 30, Status: http.StatusNotFound}
-	ErrVariableExists            = Error{Code: 31, Status: http.StatusForbidden}
-	ErrInvalidGroupPattern       = Error{Code: 32, Status: http.StatusBadRequest}
-	ErrGroupExists               = Error{Code: 33, Status: http.StatusForbidden}
-	ErrNotEnoughAdmin            = Error{Code: 34, Status: http.StatusBadRequest}
-	ErrInvalidProjectName        = Error{Code: 35, Status: http.StatusBadRequest}
-	ErrInvalidApplicationPattern = Error{Code: 36, Status: http.StatusBadRequest}
-	ErrInvalidPipelinePattern    = Error{Code: 37, Status: http.StatusBadRequest}
-	ErrNotFound                  = Error{Code: 38, Status: http.StatusNotFound}
+	ErrProjectExists             = Error{Code: 31, Status: http.StatusForbidden}
+	ErrProjectGroupExists        = Error{Code: 32, Status: http.StatusForbidden}
+	ErrVariableExists            = Error{Code: 33, Status: http.StatusForbidden}
+	ErrInvalidGroupPattern       = Error{Code: 34, Status: http.StatusBadRequest}
+	ErrNotEnoughAdmin            = Error{Code: 35, Status: http.StatusBadRequest}
+	ErrInvalidProjectName        = Error{Code: 36, Status: http.StatusBadRequest}
+	ErrInvalidApplicationPattern = Error{Code: 37, Status: http.StatusBadRequest}
+	ErrInvalidPipelinePattern    = Error{Code: 38, Status: http.StatusBadRequest}
+	ErrNotFound                  = Error{Code: 39, Status: http.StatusNotFound}
 	ErrBadRequest                = Error{Code: 40, Status: http.StatusBadRequest}
 	ErrInvalidGoPath             = Error{Code: 48, Status: http.StatusBadRequest}
 	ErrAlreadyTaken              = Error{Code: 91, Status: http.StatusGone}
 	ErrRocketNodeNotFound        = Error{Code: 93, Status: http.StatusNotFound}
 	ErrRocketInvalid             = Error{Code: 96, Status: http.StatusBadRequest}
-	ErrNotImplemented            = Error{Code: 99, Status: http.StatusNotImplemented}
-	ErrInvalidKeyPattern         = Error{Code: 102, Status: http.StatusBadRequest}
-	ErrTokenNotFound             = Error{Code: 121, Status: http.StatusNotFound}
-	ErrUnsupportedOSArchPlugin   = Error{Code: 129, Status: http.StatusNotFound}
-	ErrWorkflowImport            = Error{Code: 140, Status: http.StatusBadRequest}
-	ErrInvalidData               = Error{Code: 149, Status: http.StatusBadRequest}
-	ErrInvalidGroupAdmin         = Error{Code: 150, Status: http.StatusForbidden}
-	ErrInvalidGroupMember        = Error{Code: 151, Status: http.StatusForbidden}
-	ErrLocked                    = Error{Code: 164, Status: http.StatusConflict}
-	ErrInvalidPassword           = Error{Code: 175, Status: http.StatusBadRequest}
-	ErrSignupDisabled            = Error{Code: 182, Status: http.StatusForbidden}
-	ErrMFARequired               = Error{Code: 194, Status: http.StatusForbidden}
+
+	ErrNotImplemented          = Error{Code: 99, Status: http.StatusNotImplemented}
+	ErrInvalidKeyPattern       = Error{Code: 102, Status: http.StatusBadRequest}
+	ErrTokenNotFound           = Error{Code: 121, Status: http.StatusNotFound}
+	ErrUnsupportedOSArchPlugin = Error{Code: 129, Status: http.StatusNotFound}
+	ErrWorkflowImport          = Error{Code: 140, Status: http.StatusBadRequest}
+	ErrInvalidData             = Error{Code: 149, Status: http.StatusBadRequest}
+	ErrInvalidGroupAdmin       = Error{Code: 150, Status: http.StatusForbidden}
+	ErrInvalidGroupMember      = Error{Code: 151, Status: http.StatusForbidden}
+	ErrLocked                  = Error{Code: 164, Status: http.StatusConflict}
+	ErrInvalidPassword         = Error{Code: 175, Status: http.StatusBadRequest}
+	ErrSignupDisabled          = Error{Code: 182, Status: http.StatusForbidden}
+	ErrMFARequired             = Error{Code: 194, Status: http.StatusForbidden}
 )
 
 var errorsEnglish = map[int]string{
