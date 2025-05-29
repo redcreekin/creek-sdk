@@ -2,11 +2,12 @@ package slog
 
 import (
 	"context"
-	"github.com/rockbears/log"
-	"github.com/sirupsen/logrus"
 	"io"
 	"os"
 	"strings"
+
+	"github.com/rockbears/log"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -16,17 +17,23 @@ const (
 	ExtraFieldTerminated = "Terminated"
 )
 
-type StationLogger struct {
-	Level       string   `toml:"level" validate:"required,oneof=debug info warn error fatal panic" comment:"Level of logs need to be added in file" default:"info"` // Log level
-	LogPath     string   `toml:"logPath" validate:"required,dirpath" comment:"Location where logfile will be created" default:""`                                   // Log file path
-	LogFileName string   `toml:"logFileName" validate:"required" default:"" comment:"Log file name"`                                                                // Log file name
-	LogFormat   string   `toml:"logFormat" validate:"required,oneof=discard stdout json file" comment:"Log format" default:"file"`                                  // Log format
-	LogOptions  []string `toml:"logOptions" validate:"omitempty" comment:"Log options"`                                                                             // Log options
+type Conf struct {
+	Level          string
+	Format         string
+	Options        []string
+	TextFields     []string
+	SkipTextFields []string
 
-	SkipTextFields []string `toml:"skipTextFields" validate:"omitempty" comment:"Skip text fields"` // Skip text fields
+	SyslogHost     string
+	SyslogPort     string
+	SyslogProtocol string
+	SyslogTag      string
+
+	EventName string
+	EventID   string
 }
 
-func Initialize(ctx context.Context, logger *StationLogger, writer *os.File) *log.Logger {
+func Initialize(ctx context.Context, logger *Conf, writer *os.File) *log.Logger {
 	loggersObject := logrus.New()
 	switch logger.Level {
 	case "debug":
@@ -41,13 +48,13 @@ func Initialize(ctx context.Context, logger *StationLogger, writer *os.File) *lo
 		loggersObject.SetLevel(logrus.InfoLevel)
 	}
 
-	switch logger.LogFormat {
+	switch logger.Format {
 	case "discard":
 		loggersObject.SetOutput(io.Discard)
 	case "json":
 		loggersObject.SetFormatter(&logrus.JSONFormatter{})
 	default:
-		if logger.LogFormat == "stdout" {
+		if logger.Format == "stdout" {
 			loggersObject.SetOutput(os.Stdout)
 		} else {
 			loggersObject.SetOutput(writer)

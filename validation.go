@@ -18,6 +18,10 @@ func initValidator() {
 	validate = validator.New()
 	// Register idValidPrefix validation
 	validate.RegisterValidation("idValidPrefix", idValidation)
+	// Register semanticVersion validation
+	validate.RegisterValidation("semanticVersion", semanticVersionValidation)
+	// Register username validation
+	validate.RegisterValidation("username", usernameValidation)
 	trans, _ := uni.GetTranslator("en")
 
 	// Register the translator for the validator
@@ -41,6 +45,28 @@ func idValidation(fl validator.FieldLevel) bool {
 	}
 	pattern := fmt.Sprintf("^%s-\\d+$", param)
 	match, _ := regexp.MatchString(pattern, idValue)
+	return match
+}
+
+func semanticVersionValidation(fl validator.FieldLevel) bool {
+	// Example pattern: 1.0.0, 1.0.0-alpha, 1.0.0+build.123
+	pattern := `^(\d+\.\d+\.\d+(-[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*)?(\+[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*)?)$`
+	versionValue := fl.Field().String()
+	if versionValue == "" {
+		return false
+	}
+	match, _ := regexp.MatchString(pattern, versionValue)
+	return match
+}
+
+func usernameValidation(fl validator.FieldLevel) bool {
+	// Example pattern: alphanumeric characters, underscores, and hyphens
+	pattern := `^[a-zA-Z0-9_]{3,20}$`
+	usernameValue := fl.Field().String()
+	if usernameValue == "" {
+		return false
+	}
+	match, _ := regexp.MatchString(pattern, usernameValue)
 	return match
 }
 
