@@ -3,6 +3,7 @@ package sdk
 import (
 	"database/sql/driver"
 	"encoding/json"
+
 	"github.com/invopop/jsonschema"
 )
 
@@ -24,4 +25,12 @@ func GetActionJsonSchema(actionModel interface{}) *jsonschema.Schema {
 	reflector := jsonschema.Reflector{Anonymous: false}
 	actionSchema := reflector.Reflect(actionModel)
 	return actionSchema
+}
+
+func GetEnvironmentRequestJsonSchema() *jsonschema.Schema {
+	reflector := jsonschema.Reflector{Anonymous: false}
+	environmentSchema := reflector.Reflect(EnvironmentRequest{})
+	environmentSchema.Title = "Environment Request"
+	environmentSchema.Description = "Schema for environment request"
+	return environmentSchema
 }

@@ -24,6 +24,9 @@ func initValidator() {
 	validate.RegisterValidation("username", usernameValidation)
 	trans, _ := uni.GetTranslator("en")
 
+	// Register password validation
+	validate.RegisterValidation("user_password", passwordValidation)
+
 	// Register the translator for the validator
 	enTranslations.RegisterDefaultTranslations(validate, trans)
 
@@ -67,6 +70,17 @@ func usernameValidation(fl validator.FieldLevel) bool {
 		return false
 	}
 	match, _ := regexp.MatchString(pattern, usernameValue)
+	return match
+}
+
+func passwordValidation(fl validator.FieldLevel) bool {
+	// Example pattern: at least 8 characters, one uppercase, one lowercase, one digit, and one special character
+	pattern := `^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$`
+	passwordValue := fl.Field().String()
+	if passwordValue == "" {
+		return false
+	}
+	match, _ := regexp.MatchString(pattern, passwordValue)
 	return match
 }
 
