@@ -13,6 +13,7 @@ type ActionResponse struct {
 	ActionTypeVersion string `json:"action_type_version,omitempty" jsonschema:"title=Action Type Version,description=Version of the action type"`
 	Status            string `json:"status,omitempty" jsonschema:"title=Status,description=Status of the action,default=active,enum=active,inactive"`
 	Position          []int  `json:"position,omitempty" jsonschema:"title=Position,description=Position of the action in the workflow"`
+	Conditions        JSONB  `json:"conditions,omitempty" jsonschema:"title=Conditions,description=Conditions for the action,default={}" jsonschema_extras:"mode=edit"`
 	Properties        JSONB  `json:"properties,omitempty" jsonschema:"title=Properties,description=Properties of the action,default={}"`
 }
 
@@ -30,6 +31,7 @@ type ActionRequest struct {
 	ActionTypeVersion string `json:"action_type_version" jsonschema:"title=Action Type Version,description=Version of the action type" jsonschema_extras:"order=4"`
 	Status            string `json:"status" jsonschema:"title=Status,description=Status of the action" jsonschema_extras:"order=5"`
 	Position          []int  `json:"position" jsonschema:"title=Position,description=Position of the action in the workflow"`
+	Conditions        JSONB  `json:"conditions,omitempty" jsonschema:"title=Conditions,description=Conditions for the action,default={}" jsonschema_extras:"mode=edit"`
 	Properties        JSONB  `json:"properties,omitempty" jsonschema:"title=Properties,description=Properties of the action"`
 }
 
