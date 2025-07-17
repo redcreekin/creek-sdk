@@ -24,12 +24,11 @@ type WorkflowResponse struct {
 }
 
 type ActionRequest struct {
-	ActionId          string `json:"action_id" jsonschema:"title=Action ID,description=Unique identifier for the action"`
-	ActionName        string `json:"action_name" jsonschema:"title=Action Name,description=Name of the action" jsonschema_extras:"order=2"`
-	ActionDescription string `json:"action_description,omitempty" jsonschema:"title=Action Description,description=Description of the action" jsonschema_extras:"order=3"`
-	ActionType        string `json:"action_type" jsonschema:"title=Action Type,description=Type of the action" jsonschema_extras:"order=4"`
-	ActionTypeVersion string `json:"action_type_version" jsonschema:"title=Action Type Version,description=Version of the action type"`
-	Status            string `json:"status" jsonschema:"title=Status,description=Status of the action" jsonschema_extras:"order=6"`
+	ActionName        string `json:"action_name" jsonschema:"title=Action Name,description=Name of the action" jsonschema_extras:"order=1"`
+	ActionDescription string `json:"action_description,omitempty" jsonschema:"title=Action Description,description=Description of the action" jsonschema_extras:"order=2"`
+	ActionType        string `json:"action_type" jsonschema:"title=Action Type,description=Type of the action" jsonschema_extras:"order=3"`
+	ActionTypeVersion string `json:"action_type_version" jsonschema:"title=Action Type Version,description=Version of the action type" jsonschema_extras:"order=4"`
+	Status            string `json:"status" jsonschema:"title=Status,description=Status of the action" jsonschema_extras:"order=5"`
 	Position          []int  `json:"position" jsonschema:"title=Position,description=Position of the action in the workflow"`
 	Properties        JSONB  `json:"properties,omitempty" jsonschema:"title=Properties,description=Properties of the action"`
 }
