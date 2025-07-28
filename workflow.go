@@ -35,15 +35,21 @@ type ActionCondition struct {
 	Required bool   `json:"station.action.runon.required,omitempty" jsonschema:"title=Required,description=Whether the action is required,default=false" jsonschema_extras:"default=false"`
 }
 
+type ActionConnect struct {
+	NodeType string `json:"node_type,omitempty" jsonschema:"title=Node Type,description=Type of the node,default=output"`
+	NodeId   string `json:"node_id,omitempty" jsonschema:"title=Node ID,description=Unique identifier for the node"`
+}
+
 type ActionRequest struct {
 	ActionId          string          `json:"station.action.id,omitempty" jsonschema:"title=Action ID,description=Unique identifier for the action" jsonschema_extras:"mode=edit,order=1"`
 	ActionName        string          `json:"station.action.name" jsonschema:"title=Action Name,description=Name of the action" jsonschema_extras:"order=2"`
 	ActionDescription string          `json:"station.action.description,omitempty" jsonschema:"title=Action Description,description=Description of the action" jsonschema_extras:"order=3"`
+	ActionNotes       string          `json:"station.action.notes,omitempty" jsonschema:"title=Action Notes,description=Notes for the action" jsonschema_extras:"mode=edit"`
 	ActionType        string          `json:"station.action.type" jsonschema:"title=Action Type,description=Type of the action" jsonschema_extras:"order=4"`
 	ActionTypeVersion string          `json:"station.action.type_version" jsonschema:"title=Action Type Version,description=Version of the action type" jsonschema_extras:"order=5"`
 	Status            string          `json:"station.action.status" jsonschema:"title=Status,description=Status of the action" jsonschema_extras:"order=6"`
 	Position          []int           `json:"station.action.position" jsonschema:"title=Position,description=Position of the action in the workflow"`
-	ConnectTo         []string        `json:"station.action.connect_to,omitempty" jsonschema:"title=Connect To,description=Actions to connect to,default=[]" jsonschema_extras:"mode=edit"`
+	ConnectTo         []ActionConnect `json:"station.action.connect_to,omitempty" jsonschema:"title=Connect To,description=Actions to connect to,default=[]" jsonschema_extras:"mode=edit"`
 	Conditions        ActionCondition `json:"station.action.conditions,omitempty" jsonschema:"title=Conditions,description=Conditions for the action,default={}" jsonschema_extras:"mode=edit"`
 	Properties        JSONB           `json:"station.action.properties,omitempty" jsonschema:"title=Properties,description=Properties of the action,default={}" jsonschema_extras:"mode=edit"`
 }
