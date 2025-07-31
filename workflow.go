@@ -52,6 +52,6 @@ type WorkflowRequest struct {
 	WorkflowName string          `json:"station.workflow.name" jsonschema:"title=Workflow Name,description=Name of the workflow" jsonschema_extras:"order=1"`
 	Description  string          `json:"station.workflow.description,omitempty" jsonschema:"title=Description,description=Description of the workflow" jsonschema_extras:"order=2"`
 	Actions      []ActionRequest `json:"actions,omitempty" jsonschema:"title=Actions,description=List of actions in the workflow" jsonschema_extras:"order=3,mode=edit"`
-	ProjectId    string          `json:"station.workflow.project_id" jsonschema:"title=Project ID,description=Unique identifier for the project" jsonschema_extras:"mode=edit"`
-	SpaceId      string          `json:"station.workflow.space_id" jsonschema:"title=Space ID,description=Unique identifier for the space" jsonschema_extras:"mode=edit"`
+	ProjectId    string          `json:"station.project.id" jsonschema:"title=Project ID,description=Unique identifier for the project" jsonschema_extras:"mode=edit"`
+	SpaceId      string          `json:"station.space.id" jsonschema:"title=Space ID,description=Unique identifier for the space" jsonschema_extras:"mode=edit"`
 }
