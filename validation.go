@@ -14,10 +14,21 @@ var validate *validator.Validate
 var enLocale = en.New()
 var uni = ut.New(enLocale, enLocale)
 
+var projectTypes = map[string]bool{
+	"build":    true,
+	"deploy":   true,
+	"data":     true,
+	"test":     true,
+	"sales":    true,
+	"security": true,
+}
+
 func initValidator() {
 	validate = validator.New()
 	// Register idValidPrefix validation
 	validate.RegisterValidation("idValidPrefix", idValidation)
+	// Register projectType validation
+	validate.RegisterValidation("projectType", projectTypeValidation)
 	// Register semanticVersion validation
 	validate.RegisterValidation("semanticVersion", semanticVersionValidation)
 	// Register username validation
@@ -31,6 +42,7 @@ func initValidator() {
 	enTranslations.RegisterDefaultTranslations(validate, trans)
 
 	validate.RegisterTranslation("idValidPrefix", trans, idRegisterTranslation, idTranslationFunc)
+	validate.RegisterTranslation("projectType", trans, projectTypeRegisterTranslation, projectTypeTranslationFunc)
 }
 
 func GetValidator() *validator.Validate {
@@ -84,11 +96,25 @@ func passwordValidation(fl validator.FieldLevel) bool {
 	return match
 }
 
+func projectTypeValidation(fl validator.FieldLevel) bool {
+	projectType := fl.Field().String()
+	return projectTypes[projectType]
+}
+
 func idRegisterTranslation(utrans ut.Translator) error {
 	return utrans.Add("idValidPrefix", "{0} must start with {1}-<number> and end with a number", true)
 }
 
 func idTranslationFunc(utrans ut.Translator, fe validator.FieldError) string {
 	t, _ := utrans.T("idValidPrefix", fe.Field(), fe.Param())
+	return t
+}
+
+func projectTypeRegisterTranslation(utrans ut.Translator) error {
+	return utrans.Add("projectType", "{0} must be one of the following: build, deploy, data, test, sales, security", true)
+}
+
+func projectTypeTranslationFunc(utrans ut.Translator, fe validator.FieldError) string {
+	t, _ := utrans.T("projectType", fe.Field())
 	return t
 }
