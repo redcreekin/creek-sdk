@@ -13,14 +13,24 @@ import (
 var validate *validator.Validate
 var enLocale = en.New()
 var uni = ut.New(enLocale, enLocale)
+var ProjectType string
+
+const (
+	ProjectTypeBuild    = "build"
+	ProjectTypeDeploy   = "deploy"
+	ProjectTypeData     = "data"
+	ProjectTypeTest     = "test"
+	ProjectTypeSales    = "sales"
+	ProjectTypeSecurity = "security"
+)
 
 var projectTypes = map[string]bool{
-	"build":    true,
-	"deploy":   true,
-	"data":     true,
-	"test":     true,
-	"sales":    true,
-	"security": true,
+	ProjectTypeBuild:    true,
+	ProjectTypeDeploy:   true,
+	ProjectTypeData:     true,
+	ProjectTypeTest:     true,
+	ProjectTypeSales:    true,
+	ProjectTypeSecurity: true,
 }
 
 func initValidator() {
