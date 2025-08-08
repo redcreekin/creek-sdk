@@ -28,7 +28,7 @@ func initValidator() {
 	// Register idValidPrefix validation
 	validate.RegisterValidation("idValidPrefix", idValidation)
 	// Register projectType validation
-	validate.RegisterValidation("projectType", projectTypeValidation)
+	validate.RegisterValidation("projectTypeValid", projectTypeValidation)
 	// Register semanticVersion validation
 	validate.RegisterValidation("semanticVersion", semanticVersionValidation)
 	// Register username validation
