@@ -3,9 +3,10 @@ package slog
 import (
 	"bytes"
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"sort"
 	"strings"
+
+	"github.com/sirupsen/logrus"
 )
 
 type StationFormatter struct {

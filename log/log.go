@@ -66,6 +66,7 @@ func Initialize(ctx context.Context, logger *Conf, writer *os.File) *log.Logger 
 		t := strings.SplitN(v, "=", 2)
 		fieldName := t[0]
 		fieldValue := t[1]
+		obj.RegisterField(log.Field(fieldName))
 		obj.Skip(log.Field(fieldName), fieldValue)
 	}
 	return obj
