@@ -48,8 +48,14 @@ func GetActionRequestJsonSchema() *jsonschema.Schema {
 	return actionRequestSchema
 }
 
-/*func GetProjectGroupRequestJsonSchema() *jsonschema.Schema {
+func GetProjectGroupRequestJsonSchema() *jsonschema.Schema {
 	reflector := jsonschema.Reflector{Anonymous: false}
-	projectRequestSchema := reflector.Reflect(&ProjectGroup{})
-
-}*/
+	groupRequestSchema := reflector.Reflect(&ProjectGroupRequest{})
+	groupRequestSchema.Title = "Project Group Request"
+	groupRequestSchema.Description = "Schema for project group request"
+	projectGroupName, _ := groupRequestSchema.Definitions["ProjectGroupRequest"].Properties.Get("project_group_name")
+	projectGroupName.Pattern = EntityNamePattern
+	projectType, _ := groupRequestSchema.Definitions["ProjectGroupRequest"].Properties.Get("project_type")
+	projectType.Enum = []any{ProjectTypeBuild, ProjectTypeDeploy, ProjectTypeData, ProjectTypeAI, ProjectTypeTest, ProjectTypeSecurity}
+	return groupRequestSchema
+}

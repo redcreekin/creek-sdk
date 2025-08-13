@@ -12,8 +12,8 @@ import (
 	"testing"
 )
 
-func projectGroupSchemaSetup() (gojsonschema.JSONLoader, error) {
-	envSchema := GetProjectGroupRequestJsonSchema()
+func workflowSchemaSetup() (gojsonschema.JSONLoader, error) {
+	envSchema := GetWorkflowRequestJsonSchema()
 	schemaBytes, err := json.Marshal(envSchema)
 	if err != nil {
 		return nil, err
@@ -22,9 +22,9 @@ func projectGroupSchemaSetup() (gojsonschema.JSONLoader, error) {
 	return schemaLoader, nil
 }
 
-func TestProjectGroupRequestSchema(t *testing.T) {
+func TestWorkflowRequestSchema(t *testing.T) {
 	engine := gin.Default()
-	loader, err := projectGroupSchemaSetup()
+	loader, err := workflowSchemaSetup()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -47,7 +47,7 @@ func TestProjectGroupRequestSchema(t *testing.T) {
 		c.JSON(http.StatusOK, gin.H{"data": request})
 	})
 
-	body := []byte(`{"project_group_name": "Fake PRJ1", "project_type": "deploy"}`)
+	body := []byte(`{"station.workflow.name": "Test Workflow", "project_type": "deploy"}`)
 	req, _ := http.NewRequest("POST", "/project_groups", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()

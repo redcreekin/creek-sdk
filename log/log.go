@@ -2,6 +2,7 @@ package slog
 
 import (
 	"context"
+	"github.com/redcreekin/creek-sdk/log/hook"
 	"io"
 	"os"
 	"strings"
@@ -62,8 +63,10 @@ func Initialize(ctx context.Context, logger *Conf, writer *os.File) *log.Logger 
 		loggersObject.SetFormatter(&StationFormatter{
 			Fields: logger.TextFields,
 		})
+		loggersObject.AddHook(&hook.ContextHook{})
 	}
 	obj := log.NewWithFactory(log.NewLogrusWrapper(loggersObject))
+	registerFields(obj)
 	for _, v := range logger.SkipTextFields {
 		t := strings.SplitN(v, "=", 2)
 		fieldName := t[0]

@@ -65,3 +65,10 @@ func init() {
 		Project,
 	)
 }
+
+func registerFields(logger *log.Logger, fields ...log.Field) {
+	fields = append(fields, Action, Administrator, AuthConsumerId, AuthSessionIAT, AuthSessionID, AuthUserID, AuthUsername, Deprecated, Duration, Goroutine, IPAddress, Latency, LatencyNum, Method, GpgKey, RbacRole, RequestID, RequestURI, Operation, Route, Size, Stacktrace, Sudo, Workflow, WorkflowRunID, Component, Project, Service)
+	for _, field := range fields {
+		logger.RegisterField(field)
+	}
+}

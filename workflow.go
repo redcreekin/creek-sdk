@@ -8,7 +8,6 @@ const (
 type ActionResponse struct {
 	ActionId          string `json:"station.action.id" jsonschema:"title=Action ID,description=Unique identifier for the action"`
 	ActionName        string `json:"station.action.name" jsonschema:"title=Action Name,description=Name of the action,minLength=1,maxLength=100"`
-	ActionDescription string `json:"station.action.description,omitempty" jsonschema:"title=Action Description,description=Description of the action"`
 	ActionNotes       string `json:"station.action.notes,omitempty" jsonschema:"title=Action Notes,description=Notes for the action"`
 	ActionType        string `json:"station.action.type" jsonschema:"title=Action Type,description=Type of the action"`
 	ActionTypeVersion string `json:"station.action.type_version,omitempty" jsonschema:"title=Action Type Version,description=Version of the action type"`
@@ -37,7 +36,6 @@ type ActionConnect struct {
 type ActionRequest struct {
 	ActionId          string          `json:"station.action.id,omitempty" jsonschema:"title=Action ID,description=Unique identifier for the action" jsonschema_extras:"mode=edit,order=1"`
 	ActionName        string          `json:"station.action.name" jsonschema:"title=Action Name,description=Name of the action" jsonschema_extras:"order=2"`
-	ActionDescription string          `json:"station.action.description,omitempty" jsonschema:"title=Action Description,description=Description of the action" jsonschema_extras:"order=3"`
 	ActionNotes       string          `json:"station.action.notes,omitempty" jsonschema:"title=Action Notes,description=Notes for the action" jsonschema_extras:"mode=edit"`
 	ActionType        string          `json:"station.action.type" jsonschema:"title=Action Type,description=Type of the action" jsonschema_extras:"order=4"`
 	ActionTypeVersion string          `json:"station.action.type_version" jsonschema:"title=Action Type Version,description=Version of the action type" jsonschema_extras:"order=5"`
