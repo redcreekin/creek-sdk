@@ -59,14 +59,16 @@ func Initialize(ctx context.Context, logger *Conf, writer *os.File) *log.Logger 
 		} else {
 			loggersObject.SetOutput(writer)
 		}
-		loggersObject.SetFormatter(&StationFormatter{})
+		loggersObject.SetFormatter(&StationFormatter{
+			Fields: logger.TextFields,
+		})
 	}
 	obj := log.NewWithFactory(log.NewLogrusWrapper(loggersObject))
 	for _, v := range logger.SkipTextFields {
 		t := strings.SplitN(v, "=", 2)
 		fieldName := t[0]
 		fieldValue := t[1]
-		obj.RegisterField(log.Field(fieldName))
+		obj.UnregisterField(log.Field(fieldName))
 		obj.Skip(log.Field(fieldName), fieldValue)
 	}
 	return obj

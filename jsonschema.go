@@ -9,6 +9,8 @@ func GetEnvironmentRequestJsonSchema() *jsonschema.Schema {
 	environmentSchema := reflector.Reflect(EnvironmentRequest{})
 	environmentSchema.Title = "Environment Request"
 	environmentSchema.Description = "Schema for environment request"
+	environmentName, _ := environmentSchema.Definitions["EnvironmentRequest"].Properties.Get("environment_name")
+	environmentName.Pattern = EntityNamePattern
 	return environmentSchema
 }
 
@@ -45,3 +47,9 @@ func GetActionRequestJsonSchema() *jsonschema.Schema {
 
 	return actionRequestSchema
 }
+
+/*func GetProjectGroupRequestJsonSchema() *jsonschema.Schema {
+	reflector := jsonschema.Reflector{Anonymous: false}
+	projectRequestSchema := reflector.Reflect(&ProjectGroup{})
+
+}*/

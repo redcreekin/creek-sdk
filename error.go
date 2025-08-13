@@ -54,19 +54,19 @@ var (
 	ErrAlreadyTaken              = Error{Code: 91, Status: http.StatusGone}
 	ErrRocketNodeNotFound        = Error{Code: 93, Status: http.StatusNotFound}
 	ErrRocketInvalid             = Error{Code: 96, Status: http.StatusBadRequest}
-
-	ErrNotImplemented          = Error{Code: 99, Status: http.StatusNotImplemented}
-	ErrInvalidKeyPattern       = Error{Code: 102, Status: http.StatusBadRequest}
-	ErrTokenNotFound           = Error{Code: 121, Status: http.StatusNotFound}
-	ErrUnsupportedOSArchPlugin = Error{Code: 129, Status: http.StatusNotFound}
-	ErrWorkflowImport          = Error{Code: 140, Status: http.StatusBadRequest}
-	ErrInvalidData             = Error{Code: 149, Status: http.StatusBadRequest}
-	ErrInvalidGroupAdmin       = Error{Code: 150, Status: http.StatusForbidden}
-	ErrInvalidGroupMember      = Error{Code: 151, Status: http.StatusForbidden}
-	ErrLocked                  = Error{Code: 164, Status: http.StatusConflict}
-	ErrInvalidPassword         = Error{Code: 175, Status: http.StatusBadRequest}
-	ErrSignupDisabled          = Error{Code: 182, Status: http.StatusForbidden}
-	ErrMFARequired             = Error{Code: 194, Status: http.StatusForbidden}
+	ErrValidationFailed          = Error{Code: 97, Status: http.StatusBadRequest}
+	ErrNotImplemented            = Error{Code: 99, Status: http.StatusNotImplemented}
+	ErrInvalidKeyPattern         = Error{Code: 102, Status: http.StatusBadRequest}
+	ErrTokenNotFound             = Error{Code: 121, Status: http.StatusNotFound}
+	ErrUnsupportedOSArchPlugin   = Error{Code: 129, Status: http.StatusNotFound}
+	ErrWorkflowImport            = Error{Code: 140, Status: http.StatusBadRequest}
+	ErrInvalidData               = Error{Code: 149, Status: http.StatusBadRequest}
+	ErrInvalidGroupAdmin         = Error{Code: 150, Status: http.StatusForbidden}
+	ErrInvalidGroupMember        = Error{Code: 151, Status: http.StatusForbidden}
+	ErrLocked                    = Error{Code: 164, Status: http.StatusConflict}
+	ErrInvalidPassword           = Error{Code: 175, Status: http.StatusBadRequest}
+	ErrSignupDisabled            = Error{Code: 182, Status: http.StatusForbidden}
+	ErrMFARequired               = Error{Code: 194, Status: http.StatusForbidden}
 )
 
 var errorsEnglish = map[int]string{

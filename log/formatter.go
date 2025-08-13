@@ -15,12 +15,13 @@ type StationFormatter struct {
 
 func (f *StationFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	var keys = make([]string, 0, len(entry.Data))
-	for k := range entry.Data {
+	for _, k := range f.Fields {
 		if k != "prefix" {
 			keys = append(keys, k)
 		}
 	}
 	sort.Strings(keys)
+	fmt.Printf("Keys: %v\n", strings.Join(keys, ","))
 	prefixFieldClashes(entry.Data)
 	b := &bytes.Buffer{}
 

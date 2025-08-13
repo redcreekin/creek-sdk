@@ -19,6 +19,7 @@ const (
 	ProjectTypeBuild    = "build"
 	ProjectTypeDeploy   = "deploy"
 	ProjectTypeData     = "data"
+	ProjectTypeAI       = "ai"
 	ProjectTypeTest     = "test"
 	ProjectTypeSales    = "sales"
 	ProjectTypeSecurity = "security"
@@ -28,6 +29,7 @@ var projectTypes = map[string]bool{
 	ProjectTypeBuild:    true,
 	ProjectTypeDeploy:   true,
 	ProjectTypeData:     true,
+	ProjectTypeAI:       true,
 	ProjectTypeTest:     true,
 	ProjectTypeSales:    true,
 	ProjectTypeSecurity: true,
