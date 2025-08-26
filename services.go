@@ -14,7 +14,10 @@ const (
 
 type JSONB map[string]interface{}
 
-func (j *JSONB) Value() (driver.Value, error) {
+func (j JSONB) Value() (driver.Value, error) {
+	if j == nil {
+		return []byte("{}"), nil
+	}
 	return json.Marshal(j)
 }
 

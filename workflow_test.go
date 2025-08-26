@@ -55,3 +55,7 @@ func TestWorkflowRequestSchema(t *testing.T) {
 	fmt.Println(w.Body.String())
 	assert.Equal(t, http.StatusOK, w.Code)
 }
+
+func TestWorkflowResponseOutput(t *testing.T) {
+
+}
